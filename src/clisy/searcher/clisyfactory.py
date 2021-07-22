@@ -1,7 +1,7 @@
 import logging
 
-from src.clisy.searcher.searcher_impl.duck_duck_go_searcher import DuckDuckGoSearcher
-from src.clisy.searcher.searchoptions import SearchOptions
+from clisy.searcher.searcher_impl.duck_duck_go_searcher import DuckDuckGoSearcher
+from clisy.searcher.searchoptions import SearchOptions
 
 
 class ClisyFactory:

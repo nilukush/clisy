@@ -28,8 +28,8 @@ __author__ = "Nilesh Kumar"
 __copyright__ = "Nilesh Kumar"
 __license__ = "MIT"
 
-from src.clisy.searcher.clisyfactory import ClisyFactory
-from src.clisy.searcher.searchoptions import SearchOptions
+from clisy.searcher.clisyfactory import ClisyFactory
+from clisy.searcher.searchoptions import SearchOptions
 
 _logger = logging.getLogger(__name__)
 

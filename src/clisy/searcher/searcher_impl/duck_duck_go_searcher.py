@@ -1,4 +1,4 @@
-from src.clisy.webview.web_browser_opener import WebBrowserOpener
+from clisy.webview.web_browser_opener import WebBrowserOpener
 
 
 class DuckDuckGoSearcher:
