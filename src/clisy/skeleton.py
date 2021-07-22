@@ -4,10 +4,10 @@ console script. To run this script uncomment the following lines in the
 ``[options.entry_points]`` section in ``setup.cfg``::
 
     console_scripts =
-         fibonacci = clisy.skeleton:run
+         clisycp = clisy.skeleton:run
 
 Then run ``pip install .`` (or ``pip install -e .`` for editable mode)
-which will install the command ``fibonacci`` inside your current environment.
+which will install the command ``clisycp`` inside your current environment.
 
 Besides console scripts, the header (i.e. until ``_logger``...) of this file can
 also be used as template for Python modules.
@@ -34,29 +34,6 @@ from clisy.searcher.searchoptions import SearchOptions
 _logger = logging.getLogger(__name__)
 
 
-# ---- Python API ----
-# The functions defined in this section can be imported by users in their
-# Python scripts/interactive interpreter, e.g. via
-# `from clisy.skeleton import fib`,
-# when using this Python module as a library.
-
-
-def fib(n):
-    """Fibonacci example function
-
-    Args:
-      n (int): integer
-
-    Returns:
-      int: n-th Fibonacci number
-    """
-    assert n > 0
-    a, b = 1, 1
-    for i in range(n - 1):
-        a, b = b, a + b
-    return a
-
-
 # ---- CLI ----
 # The functions defined in this section are wrappers around the main Python
 # API allowing them to be called directly from the terminal as a CLI
@@ -74,8 +51,25 @@ def parse_args(args):
       :obj:`argparse.Namespace`: command line parameters namespace
     """
     parser = argparse.ArgumentParser(description="CLI Search")
-    parser.add_argument("--ddg", dest="ddg", required=False, help="Search in DuckDuckGo",
-                        default="pyscaffold")
+    mutually_exclusive_group = parser.add_mutually_exclusive_group()
+
+    mutually_exclusive_group.add_argument(
+        "-ddg",
+        "--duck-duck-go",
+        dest="ddg",
+        type=str,
+        required=False,
+        help="Search in DuckDuckGo"
+    )
+
+    mutually_exclusive_group.add_argument(
+        "-g",
+        "--google",
+        dest="g",
+        type=str,
+        required=False,
+        help="Search in Google"
+    )
 
     parser.add_argument(
         "-v",
@@ -109,9 +103,9 @@ def setup_logging(loglevel):
 
 
 def main(args):
-    """Wrapper allowing :func:`fib` to be called with string arguments in a CLI fashion
+    """Wrapper allowing to be called with string arguments in a CLI fashion
 
-    Instead of returning the value from :func:`fib`, it prints the result to the
+    Instead of returning the value from, it prints the result to the
     ``stdout`` in a nicely formatted message.
 
     Args:
@@ -120,14 +114,17 @@ def main(args):
     """
     args = parse_args(args)
     setup_logging(args.loglevel)
-    _logger.debug("Starting crazy calculations...")
+    _logger.debug("Starting crazy search...")
     try:
         if args.ddg:
             ClisyFactory(SearchOptions.DUCKDUCKGO).get_searcher().open(query_string=args.ddg)
+        elif args.g:
+            ClisyFactory(SearchOptions.GOOGLE).get_searcher().open(query_string=args.g)
         else:
             ClisyFactory(SearchOptions.DUCKDUCKGO).get_searcher().open(query_string=args.ddg)
     except Exception as ex:
         _logger.error("You provided an incorrect option to search : %r", ex)
+        raise
 
     _logger.info("Script ends here")
 
@@ -149,6 +146,6 @@ if __name__ == "__main__":
     # After installing your project with pip, users can also run your Python
     # modules as scripts via the ``-m`` flag, as defined in PEP 338::
     #
-    #     python -m clisy.skeleton 42
+    #     python -m clisy.skeleton
     #
     run()

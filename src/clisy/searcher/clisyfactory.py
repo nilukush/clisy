@@ -1,5 +1,6 @@
 import logging
 
+from clisy.searcher.searcher_impl.GoogleSearcher import GoogleSearcher
 from clisy.searcher.searcher_impl.duck_duck_go_searcher import DuckDuckGoSearcher
 from clisy.searcher.searchoptions import SearchOptions
 
@@ -7,13 +8,14 @@ from clisy.searcher.searchoptions import SearchOptions
 class ClisyFactory:
     _logger = logging.getLogger(__name__)
     searchers = {
-        SearchOptions.DUCKDUCKGO: DuckDuckGoSearcher
+        SearchOptions.DUCKDUCKGO: DuckDuckGoSearcher,
+        SearchOptions.GOOGLE: GoogleSearcher
     }
 
     def __init__(self):
         self.search_option = SearchOptions.DUCKDUCKGO
 
-    def __init__(self, search_option):
+    def __init__(self, search_option=str):
         self.search_option = search_option
 
     def get_searcher(self):
