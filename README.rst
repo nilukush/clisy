@@ -1,16 +1,20 @@
-====
-clis
-====
+======
+clisy
+======
 
-
-Add a short description here!
-
+A command line utility to open browser for when you want to search something across various options
 
 Description
 ===========
 
-A longer description of your project goes here...
+This is a simple utility to open browser from command line when you want to search something from various search options. Currently, it supports DuckDuckGo. But quickly, will plan to add the following options as well :
 
+* GOOGLE ("g")
+* WIKIPEDIA ("w")
+* WIRECUTTER ("wc")
+* AMAZON ("a")
+* CREATIVE_COMMONS ("cc")
+* IMDB ("imdb")
 
 .. _pyscaffold-notes:
 

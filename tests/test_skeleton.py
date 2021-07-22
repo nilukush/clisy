@@ -1,6 +1,6 @@
 import pytest
 
-from clis.skeleton import fib, main
+from clisy.skeleton import fib, main
 
 __author__ = "Nilesh Kumar"
 __copyright__ = "Nilesh Kumar"

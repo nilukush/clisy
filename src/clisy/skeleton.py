@@ -4,7 +4,7 @@ console script. To run this script uncomment the following lines in the
 ``[options.entry_points]`` section in ``setup.cfg``::
 
     console_scripts =
-         fibonacci = clis.skeleton:run
+         fibonacci = clisy.skeleton:run
 
 Then run ``pip install .`` (or ``pip install -e .`` for editable mode)
 which will install the command ``fibonacci`` inside your current environment.
@@ -24,11 +24,12 @@ import argparse
 import logging
 import sys
 
-from clis import __version__
-
 __author__ = "Nilesh Kumar"
 __copyright__ = "Nilesh Kumar"
 __license__ = "MIT"
+
+from src.clisy.searcher.clisyfactory import ClisyFactory
+from src.clisy.searcher.searchoptions import SearchOptions
 
 _logger = logging.getLogger(__name__)
 
@@ -36,7 +37,7 @@ _logger = logging.getLogger(__name__)
 # ---- Python API ----
 # The functions defined in this section can be imported by users in their
 # Python scripts/interactive interpreter, e.g. via
-# `from clis.skeleton import fib`,
+# `from clisy.skeleton import fib`,
 # when using this Python module as a library.
 
 
@@ -72,13 +73,10 @@ def parse_args(args):
     Returns:
       :obj:`argparse.Namespace`: command line parameters namespace
     """
-    parser = argparse.ArgumentParser(description="Just a Fibonacci demonstration")
-    parser.add_argument(
-        "--version",
-        action="version",
-        version="clis {ver}".format(ver=__version__),
-    )
-    parser.add_argument(dest="n", help="n-th Fibonacci number", type=int, metavar="INT")
+    parser = argparse.ArgumentParser(description="CLI Search")
+    parser.add_argument("--ddg", dest="ddg", required=False, help="Search in DuckDuckGo",
+                        default="pyscaffold")
+
     parser.add_argument(
         "-v",
         "--verbose",
@@ -123,7 +121,14 @@ def main(args):
     args = parse_args(args)
     setup_logging(args.loglevel)
     _logger.debug("Starting crazy calculations...")
-    print("The {}-th Fibonacci number is {}".format(args.n, fib(args.n)))
+    try:
+        if args.ddg:
+            ClisyFactory(SearchOptions.DUCKDUCKGO).get_searcher().open(query_string=args.ddg)
+        else:
+            ClisyFactory(SearchOptions.DUCKDUCKGO).get_searcher().open(query_string=args.ddg)
+    except Exception as ex:
+        _logger.error("You provided an incorrect option to search : %r", ex)
+
     _logger.info("Script ends here")
 
 
@@ -144,6 +149,6 @@ if __name__ == "__main__":
     # After installing your project with pip, users can also run your Python
     # modules as scripts via the ``-m`` flag, as defined in PEP 338::
     #
-    #     python -m clis.skeleton 42
+    #     python -m clisy.skeleton 42
     #
     run()

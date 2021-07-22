@@ -2,4 +2,4 @@
 Contributors
 ============
 
-* Nilesh Kumar <nilesh.kumar@umma.id>
+* Nilesh Kumar <nilukush@gmail.com>

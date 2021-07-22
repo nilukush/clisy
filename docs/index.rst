@@ -1,8 +1,8 @@
 ====
-clis
+clisy
 ====
 
-This is the documentation of **clis**.
+This is the documentation of **clisy**.
 
 .. note::
 
