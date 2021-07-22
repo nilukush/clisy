@@ -50,35 +50,20 @@ def parse_args(args):
     Returns:
       :obj:`argparse.Namespace`: command line parameters namespace
     """
-    parser = argparse.ArgumentParser(description="CLI Search")
-    mutually_exclusive_group = parser.add_mutually_exclusive_group()
+    return get_parser().parse_args(args)
 
-    mutually_exclusive_group.add_argument(
-        "-ddg",
-        "--duck-duck-go",
-        dest="ddg",
-        type=str,
-        required=False,
-        help="Search in DuckDuckGo"
-    )
 
-    mutually_exclusive_group.add_argument(
-        "-g",
-        "--google",
-        dest="g",
-        type=str,
-        required=False,
-        help="Search in Google"
-    )
+def get_parser():
+    parser = argparse.ArgumentParser(
+        description="A command line utility to open browser for when you want to search something across various "
+                    "search options")
+    add_mutually_exclusive_group(parser)
+    add_optional_arg_v(parser)
+    add_optional_arg_vv(parser)
+    return parser
 
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        dest="loglevel",
-        help="set loglevel to INFO",
-        action="store_const",
-        const=logging.INFO,
-    )
+
+def add_optional_arg_vv(parser):
     parser.add_argument(
         "-vv",
         "--very-verbose",
@@ -87,7 +72,92 @@ def parse_args(args):
         action="store_const",
         const=logging.DEBUG,
     )
-    return parser.parse_args(args)
+
+
+def add_optional_arg_v(parser):
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        dest="loglevel",
+        help="set loglevel to INFO",
+        action="store_const",
+        const=logging.INFO,
+    )
+
+
+def add_mutually_exclusive_group(parser):
+    mutually_exclusive_group = parser.add_mutually_exclusive_group()
+    mutually_exclusive_group.add_argument(
+        "--ddg",
+        "--duck-duck-go",
+        dest="ddg",
+        type=str,
+        required=False,
+        metavar="<query_string>",
+        help="Search in DuckDuckGo"
+    )
+    mutually_exclusive_group.add_argument(
+        "-g",
+        "--google",
+        dest="g",
+        type=str,
+        required=False,
+        metavar="<query_string>",
+        help="Search in Google"
+    )
+    mutually_exclusive_group.add_argument(
+        "-w",
+        "--wikipedia",
+        dest="w",
+        type=str,
+        required=False,
+        metavar="<query_string>",
+        help="Search in Wikipedia"
+    )
+    mutually_exclusive_group.add_argument(
+        "--wc",
+        "--wirecutter",
+        dest="wc",
+        type=str,
+        required=False,
+        metavar="<query_string>",
+        help="Search in Wirecutter"
+    )
+    mutually_exclusive_group.add_argument(
+        "-a",
+        "--amazon",
+        dest="a",
+        type=str,
+        required=False,
+        metavar="<query_string>",
+        help="Search in Amazon"
+    )
+    mutually_exclusive_group.add_argument(
+        "--cci",
+        "--creative-commons-image",
+        dest="cci",
+        type=str,
+        required=False,
+        metavar="<query_string>",
+        help="Image Search in Creative Commons"
+    )
+    mutually_exclusive_group.add_argument(
+        "--imdb",
+        dest="imdb",
+        type=str,
+        required=False,
+        metavar="<query_string>",
+        help="Search in IMDb"
+    )
+    mutually_exclusive_group.add_argument(
+        "--sw",
+        "--swiggy",
+        dest="sw",
+        type=str,
+        required=False,
+        metavar="<query_string>",
+        help="Search in Swiggy"
+    )
 
 
 def setup_logging(loglevel):
@@ -110,20 +180,33 @@ def main(args):
 
     Args:
       args (List[str]): command line parameters as list of strings
-          (for example  ``["--verbose", "42"]``).
+          (for example  ``["--verbose", "test"]``).
     """
     args = parse_args(args)
     setup_logging(args.loglevel)
+
     _logger.debug("Starting crazy search...")
     try:
         if args.ddg:
             ClisyFactory(SearchOptions.DUCKDUCKGO).get_searcher().open(query_string=args.ddg)
         elif args.g:
             ClisyFactory(SearchOptions.GOOGLE).get_searcher().open(query_string=args.g)
+        elif args.w:
+            ClisyFactory(SearchOptions.WIKIPEDIA).get_searcher().open(query_string=args.w)
+        elif args.wc:
+            ClisyFactory(SearchOptions.WIRECUTTER).get_searcher().open(query_string=args.wc)
+        elif args.a:
+            ClisyFactory(SearchOptions.AMAZON).get_searcher().open(query_string=args.a)
+        elif args.cci:
+            ClisyFactory(SearchOptions.CREATIVE_COMMONS_IMAGE).get_searcher().open(query_string=args.cci)
+        elif args.imdb:
+            ClisyFactory(SearchOptions.IMDB).get_searcher().open(query_string=args.imdb)
+        elif args.sw:
+            ClisyFactory(SearchOptions.SWIGGY).get_searcher().open(query_string=args.sw)
         else:
-            ClisyFactory(SearchOptions.DUCKDUCKGO).get_searcher().open(query_string=args.ddg)
+            ClisyFactory(SearchOptions.DUCKDUCKGO).get_searcher().open(query_string=args.query_string)
     except Exception as ex:
-        _logger.error("You provided an incorrect option to search : %r", ex)
+        _logger.error("You provided an incorrect option to search. Here is the error message : %r", ex)
         raise
 
     _logger.info("Script ends here")

@@ -4,8 +4,9 @@ class SearchOptions:
     WIKIPEDIA = "w"
     WIRECUTTER = "wc"
     AMAZON = "a"
-    CREATIVE_COMMONS = "cc"
+    CREATIVE_COMMONS_IMAGE = "cci"
     IMDB = "imdb"
+    SWIGGY = "sw"
 
     def __str__(self):
         return self.DUCKDUCKGO + "\n" \
@@ -13,7 +14,7 @@ class SearchOptions:
                + self.WIKIPEDIA + "\n" \
                + self.WIRECUTTER + "\n" \
                + self.AMAZON + "\n" \
-               + self.CREATIVE_COMMONS + "\n" \
+               + self.CREATIVE_COMMONS_IMAGE + "\n" \
                + self.IMDB
 
 
