@@ -5,7 +5,7 @@ clisy
 A command line utility to open browser for when you want to search something across various search options
 
 Description
-===========
+============
 
 This is a simple utility to open browser from command line when you want to search something from various search options. Currently, it supports DuckDuckGo. But quickly, will plan to add the following options as well :
 
@@ -20,6 +20,7 @@ This is a simple utility to open browser from command line when you want to sear
 
 Installation
 =============
+Run the following command to install clisy
 ::
 
     pip install clisy
@@ -27,12 +28,13 @@ Installation
 Once ``clisy`` is installed, you get a command line utility called ``clisycp``.
 
 Usage
-======
-It is simple command line utility. To see the usage, you can type the following :
+=====
+It is simple command line utility. To see the usage, you can type the following
 ::
+
     clisycp -h
 
-Alternatively, here is the usage from version ``0.0.3`` so far :
+Alternatively, here is the usage from version ``0.0.3`` so far
 ::
 
     usage: clisycp [-h]
